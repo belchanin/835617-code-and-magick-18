@@ -17,6 +17,8 @@ var renderCloud = function (ctx, x, y, color) {
 };
 
 var renderText = function (ctx, x, y, color, text) {
+  ctx.font = '16px PT Mono';
+  ctx.textBaseLine = 'hanging';
   ctx.fillStyle = color;
   ctx.fillText(text, x, y);
 };
@@ -41,8 +43,6 @@ window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff');
 
-  ctx.font = '16px PT Mono';
-  ctx.textBaseLine = 'hanging';
   renderText(ctx, CLOUD_X + FONT_GAP, CLOUD_Y + GAP + FONT_GAP, '#000', 'Ура вы победили!');
   renderText(ctx, CLOUD_X + FONT_GAP, CLOUD_Y + GAP + FONT_GAP * 2, '#000', 'Список результатов:');
 
