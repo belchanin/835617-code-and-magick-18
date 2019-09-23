@@ -38,9 +38,9 @@ var insertWizardData = function (template) {
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 var wizardFragment = document.createDocumentFragment();
+var wizards = generateWizardsData(WIZARD_COUNT);
 
 for (var i = 0; i < WIZARD_COUNT; i++) {
-  var wizards = generateWizardsData(WIZARD_COUNT);
   wizardFragment.appendChild(insertWizardData(similarWizardTemplate));
 }
 
