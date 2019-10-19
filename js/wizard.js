@@ -10,11 +10,25 @@
   var wizardFireballColor = document.querySelector('.setup-fireball-wrap');
   var wizardFireballInput = document.querySelector('input[name = "fireball-color"]');
 
+  var wizard = {
+    onEyesChange: function (color) {
+      return color;
+    },
+    onCoatChange: function (color) {
+      return color;
+    }
+  };
+
   var setColorAttrubutes = function (colors, element, field) {
     var color = window.util.getRandomElem(colors);
 
     element.style.fill = color;
     field.value = color;
+    if (element === wizardCoatColor) {
+      wizard.onCoatChange(color);
+    } else {
+      wizard.onEyesChange(color);
+    }
   };
 
   wizardCoatColor.addEventListener('click', function () {
@@ -30,4 +44,8 @@
     wizardFireballColor.style.backgroundColor = color;
     wizardFireballInput.value = color;
   });
+
+  window.wizard = wizard;
+
+  return window.wizard;
 })();

@@ -1,30 +1,55 @@
 'use strict';
 
 (function () {
-  var WIZARD_COUNT = 4;
+  var coatColor;
+  var eyesColor;
 
-  document.querySelector('.setup-similar').classList.remove('hidden');
+  var wizards = [];
 
-  var insertWizardData = function (template, element) {
-    var wizardElement = template.cloneNode(true);
-    wizardElement.querySelector('.setup-similar-label').textContent = element.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = element.colorCoat;
-    wizardElement.querySelector('.wizard-eyes').style.fill = element.colorEyes;
-
-    return wizardElement;
+  var getRank = function (wizard) {
+    var rank = 0;
+    if (wizard.colorCoat === coatColor) {
+      rank += 2;
+    }
+    if (wizard.colorEyes === eyesColor) {
+      rank += 1;
+    }
+    return rank;
   };
 
-  var similarListElement = document.querySelector('.setup-similar-list');
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-
-  var successGetHandler = function (wizards) {
-    var wizardFragment = document.createDocumentFragment();
-
-    for (var i = 0; i < WIZARD_COUNT; i++) {
-      wizardFragment.appendChild(insertWizardData(similarWizardTemplate, wizards[i]));
+  var namesComparator = function (left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
     }
+  };
 
-    similarListElement.appendChild(wizardFragment);
+  var updateWizards = function () {
+    window.renderWizards(wizards.sort(function (left, right) {
+      var rankDiff = getRank(right) - getRank(left);
+      if (rankDiff === 0) {
+        rankDiff = namesComparator(left.name, right.name);
+      }
+      return rankDiff;
+    }));
+  };
+
+  window.wizard.onEyesChange = window.debounce(function (color) {
+    eyesColor = color;
+    updateWizards();
+  });
+
+  window.wizard.onCoatChange = window.debounce(function (color) {
+    coatColor = color;
+    updateWizards();
+  });
+
+  var successGetHandler = function (data) {
+    wizards = data;
+    updateWizards();
   };
 
   var errorHandler = function (errorMessage) {
